@@ -49,4 +49,5 @@ group :development, :test do
   gem "factory_girl_rails"
   gem "pry"
   gem "simplecov", "~> 0.7.1"
+  gem "faker"
 end
