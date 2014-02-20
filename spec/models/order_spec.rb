@@ -86,6 +86,21 @@ describe Order do
         end
       end
     end
+
+    context 'to a submitted order' do
+      let(:order) do
+        order = create(:order)
+        order.products << create(:product)
+        order.submit!
+        order
+      end
+
+      let(:product) { create(:product, amount_in_stock: 5) }
+
+      it 'raises an exception' do
+        expect { order.products << product }.to raise_error(Order::InvalidState)
+      end
+    end
   end
 
   describe 'removing a product' do
@@ -101,6 +116,20 @@ describe Order do
       it 'remove the product from the relationship' do
         order.products.destroy(product)
         expect(order.products).to_not include(product)
+      end
+    end
+
+    context 'from a submitted order' do
+      let(:order) do
+        order = create(:order)
+        order.products << create(:product)
+        order.submit!
+        order
+      end
+
+      it 'raises an exception' do
+        product = order.products.first
+        expect { order.products.destroy(product) }.to raise_error(Order::InvalidState)
       end
     end
   end

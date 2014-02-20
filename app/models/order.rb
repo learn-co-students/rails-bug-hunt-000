@@ -1,8 +1,8 @@
 class Order < ActiveRecord::Base
   has_many :product_orders
   has_many :products, through: :product_orders,
-                before_add: :decrement_product_amount_in_stock!,
-                before_remove: :increment_product_amount_in_stock!
+                before_add: :manage_product_addition!,
+                before_remove: :manage_product_removal!
 
   include AASM
 
@@ -25,15 +25,20 @@ class Order < ActiveRecord::Base
     products.sum(:cost_in_cents)
   end
 
-  def decrement_product_amount_in_stock!(product)
+  def manage_product_addition!(product)
+    raise InvalidState unless self.unsubmitted?
     product.decrement_amount_in_stock!
   end
 
-  def increment_product_amount_in_stock!(product)
+  def manage_product_removal!(product)
+    raise InvalidState unless self.unsubmitted?
     product.increment_amount_in_stock!
   end
 
   def has_products?
     self.products.count > 0
+  end
+
+  class InvalidState < StandardError
   end
 end
