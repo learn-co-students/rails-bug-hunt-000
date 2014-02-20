@@ -13,7 +13,7 @@ class Order < ActiveRecord::Base
     state :shipped
 
     event :submit do
-      transitions from: :unsubmitted, to: :processing
+      transitions from: :unsubmitted, to: :processing, guards: [:has_products?]
     end
 
     event :ship do
@@ -31,5 +31,9 @@ class Order < ActiveRecord::Base
 
   def increment_product_amount_in_stock!(product)
     product.increment_amount_in_stock!
+  end
+
+  def has_products?
+    self.products.count > 0
   end
 end

@@ -29,10 +29,20 @@ describe Order do
   end
 
   describe 'submitting an order' do
-    it 'transitions to the processing state' do
-      order = create(:order)
-      order.submit!
-      expect(order.processing?).to eq true
+    context 'with products' do
+      it 'transitions to the processing state' do
+        order.products << product
+        order.submit!
+        expect(order.processing?).to eq true
+      end
+    end
+
+    context 'without products' do
+      it 'doesnt transition to processing' do
+        expect {
+          order.submit!
+        }.to raise_error(AASM::InvalidTransition)
+      end
     end
   end
 
