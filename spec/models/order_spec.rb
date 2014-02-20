@@ -73,7 +73,7 @@ describe Order do
         let(:product) { create(:product, amount_in_stock: 0) }
 
         before do
-          expect { product.orders << order }.to raise_error(ActiveRecord::RecordInvalid)
+          expect { order.products << product }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
         it 'does not add the product to the order' do
