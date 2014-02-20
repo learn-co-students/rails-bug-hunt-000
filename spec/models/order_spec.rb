@@ -19,4 +19,28 @@ describe Order do
       expect(order.total_cost_in_cents).to eq (product2.cost_in_cents + product.cost_in_cents)
     end
   end
+
+  describe 'new orders' do
+    it 'starts off in the unsubmitted state' do
+      order = create(:order)
+
+      expect(order.unsubmitted?).to eq true
+    end
+  end
+
+  describe 'submitting an order' do
+    it 'transitions to the processing state' do
+      order = create(:order)
+      order.submit!
+      expect(order.processing?).to eq true
+    end
+  end
+
+  describe 'shipping an order' do
+    it 'transitions to the shipped state' do
+      order = create(:order, aasm_state: 'processing')
+      order.ship!
+      expect(order.shipped?).to eq true
+    end
+  end
 end

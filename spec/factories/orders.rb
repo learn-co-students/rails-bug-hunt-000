@@ -2,6 +2,5 @@
 
 FactoryGirl.define do
   factory :order do
-    aasm_state 'unsubmitted'
   end
 end
