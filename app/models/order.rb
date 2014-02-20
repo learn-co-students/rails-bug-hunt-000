@@ -4,6 +4,7 @@ class Order < ActiveRecord::Base
 
   include AASM
 
+  # https://github.com/aasm/aasm
   aasm do
     state :unsubmitted, initial: true
     state :processing
