@@ -100,6 +100,14 @@ describe Order do
       it 'raises an exception' do
         expect { order.products << product }.to raise_error(Order::InvalidProductAddition)
       end
+
+      it 'does not decrement the products in stock' do
+        product = order.products.first
+
+        expect {
+          order.products << product rescue Order::InvalidProductAddition
+        }.to change { product.amount_in_stock }.by(0)
+      end
     end
   end
 
@@ -130,6 +138,14 @@ describe Order do
       it 'raises an exception' do
         product = order.products.first
         expect { order.products.destroy(product) }.to raise_error(Order::InvalidProductRemoval)
+      end
+
+      it 'does not decrement the products in stock' do
+        product = order.products.first
+
+        expect {
+          order.products.destroy(product) rescue Order::InvalidProductRemoval
+        }.to change { product.amount_in_stock }.by(0)
       end
     end
   end
