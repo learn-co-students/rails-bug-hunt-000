@@ -6,6 +6,10 @@ class Product < ActiveRecord::Base
 
   validates :amount_in_stock, numericality: { greater_than_or_equal_to: 0 }
 
+  def self.out_of_stock
+    self.where(amount_in_stock: 0)
+  end
+
   def decrement_amount_in_stock!(order=nil)
     self.amount_in_stock -= 1
     save!

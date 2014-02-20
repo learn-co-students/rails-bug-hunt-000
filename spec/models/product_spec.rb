@@ -3,6 +3,16 @@ require 'spec_helper'
 describe Product do
   let(:order) { create(:order) }
 
+  describe 'out of stock products' do
+    it 'retrieves all products with a stock of 0' do
+      product1 = create(:product, amount_in_stock: 0)
+      create(:product, amount_in_stock: 1)
+      product3 = create(:product, amount_in_stock: 0)
+
+      expect(Product.out_of_stock).to match_array([product1, product3])
+    end
+  end
+
   describe 'adding to order' do
     context 'with remaining stock' do
       let(:product) { create(:product, amount_in_stock: 5) }
