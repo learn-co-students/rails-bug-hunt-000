@@ -98,7 +98,7 @@ describe Order do
       let(:product) { create(:product, amount_in_stock: 5) }
 
       it 'raises an exception' do
-        expect { order.products << product }.to raise_error(Order::InvalidState)
+        expect { order.products << product }.to raise_error(Order::InvalidProductAddition)
       end
     end
   end
@@ -129,7 +129,7 @@ describe Order do
 
       it 'raises an exception' do
         product = order.products.first
-        expect { order.products.destroy(product) }.to raise_error(Order::InvalidState)
+        expect { order.products.destroy(product) }.to raise_error(Order::InvalidProductAddition)
       end
     end
   end
