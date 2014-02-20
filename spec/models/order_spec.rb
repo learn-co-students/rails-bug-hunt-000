@@ -129,7 +129,7 @@ describe Order do
 
       it 'raises an exception' do
         product = order.products.first
-        expect { order.products.destroy(product) }.to raise_error(Order::InvalidProductAddition)
+        expect { order.products.destroy(product) }.to raise_error(Order::InvalidProductRemoval)
       end
     end
   end

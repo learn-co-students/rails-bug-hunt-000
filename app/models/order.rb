@@ -31,7 +31,7 @@ class Order < ActiveRecord::Base
   end
 
   def manage_product_removal!(product)
-    raise InvalidProductAddition unless self.unsubmitted?
+    raise InvalidProductRemoval unless self.unsubmitted?
     product.increment_amount_in_stock!
   end
 
@@ -40,5 +40,8 @@ class Order < ActiveRecord::Base
   end
 
   class InvalidProductAddition < StandardError
+  end
+
+  class InvalidProductRemoval < StandardError
   end
 end
