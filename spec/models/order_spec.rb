@@ -46,58 +46,62 @@ describe Order do
     end
   end
 
-  describe "adding a product to an order" do
-    context 'with remaining stock' do
-      let(:product) { create(:product, amount_in_stock: 5) }
+  describe "adding a product" do
+    context 'to an unsubmitted order' do
+      context 'with remaining stock' do
+        let(:product) { create(:product, amount_in_stock: 5) }
 
-      it 'increases the total cost of the order' do
-        expect {
+        it 'increases the total cost of the order' do
+          expect {
+            order.products << product
+          }.to change { order.total_cost_in_cents }.by(product.cost_in_cents)
+        end
+
+        it 'adds the product to the order' do
           order.products << product
-        }.to change { order.total_cost_in_cents }.by(product.cost_in_cents)
+          expect(order.products).to include product
+        end
+
+        it 'decrements the amount of product in stock' do
+          expect {
+            order.products << product
+          }.to change { product.amount_in_stock }.by(-1)
+        end
       end
 
-      it 'adds the product to the order' do
-        order.products << product
-        expect(order.products).to include product
-      end
+      context 'with no remaining stock' do
+        let(:product) { create(:product, amount_in_stock: 0) }
 
-      it 'decrements the amount of product in stock' do
-        expect {
-          order.products << product
-        }.to change { product.amount_in_stock }.by(-1)
-      end
-    end
+        before do
+          expect { product.orders << order }.to raise_error(ActiveRecord::RecordInvalid)
+        end
 
-    context 'with no remaining stock' do
-      let(:product) { create(:product, amount_in_stock: 0) }
+        it 'does not add the product to the order' do
+          expect(order.products).to_not include product
+        end
 
-      before do
-        expect { product.orders << order }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-
-      it 'does not add the product to the order' do
-        expect(order.products).to_not include product
-      end
-
-      it 'does not decrement the amount of product in stock' do
-        product.reload
-        expect(product.amount_in_stock).to eq 0
+        it 'does not decrement the amount of product in stock' do
+          product.reload
+          expect(product.amount_in_stock).to eq 0
+        end
       end
     end
   end
 
-  describe 'removing a product from a order' do
-    let(:product) { create(:product, amount_in_stock: 0) }
+  describe 'removing a product' do
+    context 'from an unsubmitted order' do
+      let(:product) { create(:product, amount_in_stock: 0) }
 
-    it 'increases the amount of product left' do
-      expect {
+      it 'increases the amount of product left' do
+        expect {
+          order.products.destroy(product)
+        }.to change { product.amount_in_stock }.by(1)
+      end
+
+      it 'remove the product from the relationship' do
         order.products.destroy(product)
-      }.to change { product.amount_in_stock }.by(1)
-    end
-
-    it 'remove the product from the relationship' do
-      order.products.destroy(product)
-      expect(order.products).to_not include(product)
+        expect(order.products).to_not include(product)
+      end
     end
   end
 end
