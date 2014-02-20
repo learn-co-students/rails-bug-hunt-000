@@ -29,6 +29,13 @@ describe Product do
 
       it 'adds the product to the order' do
         product.orders << order
+        expect(product.orders).to include(order)
+      end
+
+      it 'decrements the amount in stock' do
+        expect {
+          product.orders << order
+        }.to change { product.amount_in_stock }.by(-1)
       end
     end
 

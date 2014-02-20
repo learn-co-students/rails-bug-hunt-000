@@ -4,14 +4,6 @@ describe Order do
   let(:order) { create(:order) }
   let(:product) { create(:product, cost_in_cents: 100000) }
 
-  describe 'adding a product to the order' do
-    it 'increases the total cost of the order' do
-      expect {
-        order.products << product
-      }.to change { order.total_cost_in_cents }.by(product.cost_in_cents)
-    end
-  end
-
   describe 'total cost in cents' do
     it 'is the sum of all the products on the order' do
       product2 = create(:product, cost_in_cents: 50000)
@@ -28,7 +20,7 @@ describe Order do
     end
   end
 
-  describe 'submitting an order' do
+  describe 'submitting' do
     context 'with products' do
       it 'transitions to the processing state' do
         order.products << product
@@ -57,6 +49,12 @@ describe Order do
   describe "adding a product to an order" do
     context 'with remaining stock' do
       let(:product) { create(:product, amount_in_stock: 5) }
+
+      it 'increases the total cost of the order' do
+        expect {
+          order.products << product
+        }.to change { order.total_cost_in_cents }.by(product.cost_in_cents)
+      end
 
       it 'adds the product to the order' do
         order.products << product
