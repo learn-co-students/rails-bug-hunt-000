@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Product do
-  let(:order) { create(:order) }
-
   describe 'in stock products' do
     it 'retrieves all products with stock greater than 0' do
                  create(:product, amount_in_stock: 0)
