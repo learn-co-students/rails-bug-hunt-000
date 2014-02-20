@@ -4,7 +4,7 @@ class CreateProducts < ActiveRecord::Migration
       t.string :name
       t.integer :serial_number
       t.integer :cost_in_cents
-      t.integer :amount_in_stock
+      t.integer :amount_in_stock, default: 0
 
       t.timestamps
     end
