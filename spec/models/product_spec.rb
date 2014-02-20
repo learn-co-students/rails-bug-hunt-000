@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Product do
-  describe 'adding to order' do
-    let(:order)   { create(:order) }
+  let(:order) { create(:order) }
 
+  describe 'adding to order' do
     context 'with remaining stock' do
       let(:product) { create(:product, amount_in_stock: 5) }
 
@@ -27,6 +27,25 @@ describe Product do
         product.reload
         expect(product.amount_in_stock).to eq(0)
       end
+    end
+  end
+
+  describe 'removing from order' do
+    let(:product) { create(:product, amount_in_stock: 1) }
+
+    before do
+      product.orders << order
+    end
+
+    it 'increases the amount in stock' do
+      expect {
+        product.orders.destroy(order)
+      }.to change { product.amount_in_stock }.by(1)
+    end
+
+    it 'removes the product from the order' do
+      product.orders.destroy(order)
+      expect(product.orders).to_not include(order)
     end
   end
 
