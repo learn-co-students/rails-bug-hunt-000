@@ -1,6 +1,8 @@
 class Order < ActiveRecord::Base
   has_many :product_orders
-  has_many :products, through: :product_orders, before_add: :decrement_product_amount_in_stock!
+  has_many :products, through: :product_orders,
+                before_add: :decrement_product_amount_in_stock!,
+                before_remove: :increment_product_amount_in_stock!
 
   include AASM
 
@@ -25,5 +27,9 @@ class Order < ActiveRecord::Base
 
   def decrement_product_amount_in_stock!(product)
     product.decrement_amount_in_stock!
+  end
+
+  def increment_product_amount_in_stock!(product)
+    product.increment_amount_in_stock!
   end
 end

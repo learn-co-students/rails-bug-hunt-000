@@ -48,16 +48,15 @@ describe Order do
     context 'with remaining stock' do
       let(:product) { create(:product, amount_in_stock: 5) }
 
-      before do
-        order.products << product
-      end
-
       it 'adds the product to the order' do
+        order.products << product
         expect(order.products).to include product
       end
 
       it 'decrements the amount of product in stock' do
-        expect(product.amount_in_stock).to eq 4
+        expect {
+          order.products << product
+        }.to change { product.amount_in_stock }.by(-1)
       end
     end
 
@@ -76,6 +75,21 @@ describe Order do
         product.reload
         expect(product.amount_in_stock).to eq 0
       end
+    end
+  end
+
+  describe 'removing a product from a order' do
+    let(:product) { create(:product, amount_in_stock: 0) }
+
+    it 'increases the amount of product left' do
+      expect {
+        order.products.destroy(product)
+      }.to change { product.amount_in_stock }.by(1)
+    end
+
+    it 'remove the product from the relationship' do
+      order.products.destroy(product)
+      expect(order.products).to_not include(product)
     end
   end
 end
