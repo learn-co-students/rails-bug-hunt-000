@@ -52,14 +52,25 @@ describe Product do
   describe 'decrementing the amount in stock' do
     it 'decreases the amount in stock by 1' do
       product = build(:product, amount_in_stock: 5)
-      product.decrement_amount_in_stock!
-      expect(product.amount_in_stock).to eq 4
+      expect {
+        product.decrement_amount_in_stock!
+      }.to change { product.amount_in_stock }.by(-1)
     end
 
     it 'raises an exception if theres no remaining product' do
       product = build(:product, amount_in_stock: 1)
       product.decrement_amount_in_stock!
       expect { product.decrement_amount_in_stock! }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
+
+  describe 'incrementing the amount in stock' do
+    let(:product) { create(:product, amount_in_stock: 1) }
+
+    it 'increases the amount in stock by 1' do
+      expect {
+        product.increment_amount_in_stock!
+      }.to change { product.amount_in_stock }.by(1)
     end
   end
 end
