@@ -1,5 +1,5 @@
 ---
-  tags: debugging, testing, rspec, rails
+  tags: debugging, testing, rspec, rails, model testing
   languages: ruby
 ---
 
@@ -17,3 +17,5 @@ some major bugs!
 
 Complete the pending tests to reveal the latent errors and then turn
 your failing tests into passing tests by fixing the code!
+
+**Hint:** Each pending test is masking exactly 1 bug.
