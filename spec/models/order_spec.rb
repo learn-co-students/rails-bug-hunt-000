@@ -31,9 +31,8 @@ describe Order do
 
     context 'without products' do
       it 'doesnt transition to processing' do
-        expect {
           order.submit!
-        }.to raise_error(AASM::InvalidTransition)
+        expect(order.unsubmitted?).to eq true
       end
     end
   end
