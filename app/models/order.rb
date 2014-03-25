@@ -7,7 +7,7 @@ class Order < ActiveRecord::Base
   include AASM
 
   # https://github.com/aasm/aasm
-  aasm do
+  aasm whiny_transitions: false do
     state :unsubmitted, initial: true
     state :processing
     state :shipped
