@@ -1,6 +1,7 @@
 ---
   tags: debugging, testing, rspec, rails, model testing
   languages: ruby
+  resources: 1
 ---
 
 # Bug Hunt
@@ -19,3 +20,6 @@ Complete the pending tests to reveal the latent errors and then turn
 your failing tests into passing tests by fixing the code!
 
 **Hint:** Each pending test is masking exactly 1 bug.
+
+## Resources
+* [Everyday Rails Testing with RSpec](http://books.flatironschool.com/books/46) - [Chapter 3: Models](http://books.flatironschool.com/books/46), page 17
