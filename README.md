@@ -1,14 +1,10 @@
 ---
-  tags: debugging, testing, rspec, rails, model testing
+  tags: debugging, testing, rspec, rails, model testing, intermediate
   languages: ruby
   resources: 1
 ---
 
 # Bug Hunt
-
-## Deliverables
-
-Fork this repository. Deliver your solution in master.
 
 ## Instructions
 
