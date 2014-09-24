@@ -19,3 +19,4 @@ your failing tests into passing tests by fixing the code!
 
 ## Resources
 * [Everyday Rails Testing with RSpec](http://books.flatironschool.com/books/46) - [Chapter 3: Models](http://books.flatironschool.com/books/46), page 17
+
