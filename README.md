@@ -1,5 +1,5 @@
 ---
-  tags: debugging, testing, rspec, rails, model testing, intermediate
+  tags: debugging, testing, rspec, rails, model testing, intermediate, bonus
   languages: ruby
   resources: 1
 ---
