@@ -6,7 +6,7 @@ class CreateProducts < ActiveRecord::Migration
       t.integer :cost_in_cents
       t.integer :amount_in_stock, default: 0
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

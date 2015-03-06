@@ -4,7 +4,7 @@ class CreateProductOrders < ActiveRecord::Migration
       t.integer :product_id
       t.integer :order_id
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :product_orders, :product_id
     add_index :product_orders, :order_id

@@ -3,7 +3,7 @@ class CreateOrders < ActiveRecord::Migration
     create_table :orders do |t|
       t.string :aasm_state
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end
