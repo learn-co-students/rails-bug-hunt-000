@@ -64,6 +64,10 @@ describe Order do
       context 'with no remaining stock' do
         let(:product) { create(:product, amount_in_stock: 0) }
 
+        before do
+          expect { order.products << product }.to raise_error(ActiveRecord::RecordInvalid)
+        end
+
         it 'does not add the product to the order' do
           pending 'im sure we could find some extras lying around'
         end
