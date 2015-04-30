@@ -14,6 +14,3 @@ Complete the pending tests to reveal the latent errors and then turn your failin
 
 **Hint:** Each pending test is masking exactly 1 bug.
 
-## Resources
-* [Everyday Rails Testing with RSpec](http://books.flatironschool.com/books/46) - [Chapter 3: Models](http://books.flatironschool.com/books/46), page 17
-
