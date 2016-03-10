@@ -3,7 +3,14 @@ require 'spec_helper'
 describe Product do
   describe 'in stock products' do
     it 'retrieves all products with stock greater than 0' do
-      pending 'deadline in 5 minutes crap crap crap'
+      2.times do
+        create(:product, amount_in_stock: 0)
+      end
+      3.times do
+        stock_num = rand(1..100)
+        product2 = create(:product, amount_in_stock: stock_num)
+      end
+      expect(Product.in_stock.count).to eq(3)
     end
   end
 
@@ -26,7 +33,10 @@ describe Product do
     end
 
     it 'raises an exception if theres no remaining product' do
-      pending 'does anyone use these tests for anything anyway?'
+      product = build(:product, amount_in_stock: 0)
+      expect {
+        product.decrement_amount_in_stock!
+      }.to raise_exception
     end
   end
 
