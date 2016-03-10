@@ -6,7 +6,14 @@ describe Order do
 
   describe 'total cost in cents' do
     it 'is the sum of all the products on the order' do
-      pending 'i can add trust me'
+      order = create(:order)
+      product1 = Product.new(cost_in_cents: 5, amount_in_stock: 4)
+      product2 = Product.new(cost_in_cents: 10, amount_in_stock: 4)
+      2.times do
+        order.products << product1
+      end
+      order.products << product2
+      expect(order.total_cost_in_cents).to eq(20)
     end
   end
 
@@ -29,14 +36,18 @@ describe Order do
 
     context 'without products' do
       it 'doesnt transition to processing' do
-        pending 'why would a sane rational user ever submit an empty order'
+        order.submit!
+        expect(order.processing?).to eq false
       end
     end
   end
 
   describe 'shipping an order' do
     it 'transitions to the shipped state' do
-      pending 'it is beneath me to test something so simple'
+      order.products << product
+      order.submit!
+      order.ship!
+      expect(order.shipped?).to eq true
     end
   end
 
@@ -46,7 +57,9 @@ describe Order do
         let(:product) { create(:product, amount_in_stock: 5) }
 
         it 'increases the total cost of the order' do
-          pending 'the accountants will notice this if its broken anyway'
+          product1 = create(:product, cost_in_cents: 138)
+          order.products << product1
+          expect(order.total_cost_in_cents).to eq 138
         end
 
         it 'adds the product to the order' do
@@ -65,11 +78,11 @@ describe Order do
         let(:product) { create(:product, amount_in_stock: 0) }
 
         before do
-          expect { order.products << product }.to raise_error(ActiveRecord::RecordInvalid)
+          expect { order.products << product }.to raise_error(RuntimeError, "Out of stock.")
         end
 
         it 'does not add the product to the order' do
-          pending 'im sure we could find some extras lying around'
+          expect(order.products.count).to eq 0
         end
 
         it 'does not decrement the amount of product in stock' do
@@ -94,7 +107,7 @@ describe Order do
       end
 
       it 'does not decrement the products in stock' do
-        pending 'need to get to the ping pong tournament'
+        expect(order.products.count).to eq 1
       end
     end
   end
@@ -129,7 +142,7 @@ describe Order do
       end
 
       it 'does not decrement the products in stock' do
-        pending 'an exception is being raised so this shouldnt happen'
+        expect(order.products.count).to eq 1
       end
     end
   end

@@ -13,16 +13,16 @@ class Order < ActiveRecord::Base
     state :shipped
 
     event :submit do
-      transitions from: :unsubmitted, to: :processing, guards: [:has_products?]
+      transitions from: :unsubmitted, to: :processing, guards: [:has_products?] ##study this
     end
 
     event :ship do
-      transitions from: :processing, to: :unsubmitted
+        transitions from: :processing, to: :shipped, guards: [:has_products?]
     end
   end
 
   def total_cost_in_cents
-    (products.sum(:cost_in_cents) / 100.0).round(2)
+    products.sum(:cost_in_cents).round(2)
   end
 
   def manage_product_addition!(product)
@@ -36,7 +36,7 @@ class Order < ActiveRecord::Base
   end
 
   def has_products?
-    self.products.count >= 0
+    self.products.count > 0
   end
 
   class InvalidProductAddition < StandardError
